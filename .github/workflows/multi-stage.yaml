@@ -30,6 +30,7 @@ jobs:
   terraform-apply:
     name: "Terraform Apply"
     needs: [terraform-plan]
+    if: github.event.review.state != 'approved'
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
