@@ -59,7 +59,7 @@ jobs:
           
         #working-directory: ${{ env.WORKING_DIRECTORY }}          
         run: |
-          terraform init -input=false -chdir=${{ vars.WORKING_DIRECTORY }} \
+          terraform init -input=false -chdir=$WORKING_DIRECTORY \
           -backend-config='bucket='${{ vars.BUCKET_NAME }} \
           -backend-config='region='${{ vars.BUCKET_REGION }} \
           -backend-config='key='${{ vars.BUCKET_KEY }}
