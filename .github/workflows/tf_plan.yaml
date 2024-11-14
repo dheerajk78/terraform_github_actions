@@ -51,4 +51,8 @@ jobs:
       # Init pulls credentials from the .aws/credentials file by default
       - name: "Run - Terraform Init"
         working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: terraform init -input=false
+        run: |
+          terraform init \
+          -backend-config='bucket='${{ vars.BUCKET_NAME }} \
+          -backend-config='region='${{ vars.BUCKET_REGION }} \
+          -backend-config='region='${{ vars.BUCKET_KEY }}
