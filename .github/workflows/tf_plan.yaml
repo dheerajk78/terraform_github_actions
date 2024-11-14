@@ -15,6 +15,7 @@ on:
     - terraform/**
 env:
   WORKING_DIRECTORY: "./src/terraform"
+  AWS_SHARED_CREDENTIALS_FILE: "~/.aws/credentials"
 
 jobs:
   terraform-plan:
