@@ -10,7 +10,7 @@ variable "primary_region" {
 variable "vpc_cidr_block" {
   type = string
 }
-variable "bucket" {
+/*variable "bucket" {
   type = string
 }
 variable "state_key" {
@@ -21,4 +21,4 @@ variable "AWS_ACCESS_KEY_ID" {
 }
 variable "AWS_SECRET_ACCESS_KEY" {
   type = string
-}
+}*/
