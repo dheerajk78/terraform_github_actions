@@ -51,10 +51,11 @@ jobs:
 
       # Init pulls credentials from the .aws/credentials file by default
       - name: "Run - Terraform Init"
-        working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
           AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          WORKING_DIRECTORY: "./src/terraform"
+        working-directory: ${{ env.WORKING_DIRECTORY }}          
         run: |
           terraform init -input=false \
           -backend-config='bucket='${{ vars.BUCKET_NAME }} \
