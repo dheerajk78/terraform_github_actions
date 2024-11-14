@@ -22,6 +22,9 @@ inputs:
   BUCKET_KEY:
     description: 'State file name for storing TF state'
     required: true
+  TFVARS_FILE: 
+    description: 'TFVARS file name for the environment '
+    required: true
 
 runs:
   using: "composite"
@@ -67,4 +70,4 @@ runs:
     - name: "Run - Terraform Apply"
       working-directory: ${{ inputs.WORKING_DIRECTORY }}        
       shell: bash
-      run: terraform apply -input=false -auto-approve
+      run: terraform apply ${{ inputs.TFVARS_FILE }} -input=false -auto-approve
