@@ -55,4 +55,4 @@ jobs:
           terraform init \
           -backend-config='bucket='${{ vars.BUCKET_NAME }} \
           -backend-config='region='${{ vars.BUCKET_REGION }} \
-          -backend-config='region='${{ vars.BUCKET_KEY }}
+          -backend-config='key='${{ vars.BUCKET_KEY }}
