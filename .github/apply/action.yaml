@@ -42,6 +42,7 @@ runs:
     # By default, Terraform checks the home directory for a .aws folder with a credential file
     # Documentation: https://docs.aws.amazon.com/ses/latest/DeveloperGuide/create-shared-credentials-file.html
     - name: "Setup - Build AWS Credentials"
+      shell: bash
       run: |
         mkdir -p ~/.aws
         echo "[default]" > ~/.aws/credentials
@@ -55,6 +56,7 @@ runs:
     # Init pulls credentials from the .aws/credentials file by default
     - name: "Run - Terraform Init"
       working-directory: ${{ inputs.WORKING_DIRECTORY }}          
+      shell: bash
       run: |
         terraform init -input=false  \
         -backend-config="bucket=${{ inputs.BUCKET_NAME }}" \
@@ -64,4 +66,5 @@ runs:
  # Auto-approve prevents the requirement of human interaction
     - name: "Run - Terraform Apply"
       working-directory: ${{ inputs.WORKING_DIRECTORY }}        
+      shell: bash
       run: terraform apply -input=false -auto-approve
