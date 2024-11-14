@@ -22,8 +22,8 @@ inputs:
   BUCKET_KEY:
     description: 'State file name for storing TF state'
     required: true
-  TFVARS_FILE: 
-    description: 'TFVARS file name for the environment '
+  ENV: 
+    description: 'Environment for deployment'
     required: true
 
 runs:
@@ -94,16 +94,16 @@ runs:
       id: plan
       working-directory: ${{ inputs.WORKING_DIRECTORY }}        
       shell: bash
-      run: terraform plan -var-file=${{ inputs.TFVARS_FILE }} -input=false -no-color -out tfplan
+      run: terraform plan -var-file=./tf-vars/${{ inputs.ENV }}.tfvars -input=false -no-color -out=tfplan
 
     - name: Publish Terraform Plan
       uses: actions/upload-artifact@v4
       with:
-        name: tfplan
-        path: ./
+        name: ${{ inputs.ENV }}-tfplan
+        path: ./tfplan
         
-    - id: save-artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ inputs.pr_id }}-tf-plan
-        path: ${{ inputs.terraform_directory }}/tfplan      
+    #- id: save-artifact
+    #  uses: actions/upload-artifact@v4
+    #  with:
+    #    name: ${{ inputs.pr_id }}-tf-plan
+    #    path: ${{ inputs.terraform_directory }}/tfplan      
