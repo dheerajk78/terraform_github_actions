@@ -13,7 +13,7 @@ on:
     - main
     paths:
     - terraform/**
-env:
+#env:
 #  WORKING_DIRECTORY: "./src/terraform"
 #  AWS_SHARED_CREDENTIALS_FILE: "~/.aws/credentials"
 
