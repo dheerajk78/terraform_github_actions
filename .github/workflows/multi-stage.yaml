@@ -17,8 +17,8 @@ env:
   WORKING_DIRECTORY: "./src/terraform"
 
 jobs:
-  terraform-plan:
-    name: "Terraform Plan"
+  terraform-plan-dev:
+    name: "Terraform Plan DEV"
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
@@ -38,17 +38,17 @@ jobs:
         uses: ./.github/plan
         with:
           WORKING_DIRECTORY: ${{ env.WORKING_DIRECTORY }}
-          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID  }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}          
+          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID_DEV  }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}          
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BUCKET_NAME: ${{ vars.BUCKET_NAME }}
-          BUCKET_REGION: ${{ vars.BUCKET_REGION }}
-          BUCKET_KEY: ${{ vars.BUCKET_KEY }}
+          BUCKET_NAME: ${{ vars.BUCKET_NAME_DEV }}
+          BUCKET_REGION: ${{ vars.BUCKET_REGION_DEV }}
+          BUCKET_KEY: ${{ vars.BUCKET_KEY_DEV }}
           
-  terraform-apply:
-    name: "Terraform Apply"
+  terraform-apply-dev:
+    name: "Terraform Apply Dev"
     runs-on: ubuntu-latest
-    needs: [terraform-plan]
+    needs: [terraform-plan-dev]
     steps:
       # Checkout the code
       # Marketplace: https://github.com/marketplace/actions/checkout
@@ -59,10 +59,59 @@ jobs:
         uses: ./.github/apply
         with:
           WORKING_DIRECTORY: ${{ env.WORKING_DIRECTORY }}
-          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID  }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}          
+          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID_DEV  }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}          
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BUCKET_NAME: ${{ vars.BUCKET_NAME }}
-          BUCKET_REGION: ${{ vars.BUCKET_REGION }}
-          BUCKET_KEY: ${{ vars.BUCKET_KEY }}
+          BUCKET_NAME: ${{ vars.BUCKET_NAME_DEV }}
+          BUCKET_REGION: ${{ vars.BUCKET_REGION_DEV }}
+          BUCKET_KEY: ${{ vars.BUCKET_KEY_DEV }}
 
+  terraform-plan-prod:
+    name: "Terraform Plan Prod"
+    runs-on: ubuntu-latest
+    needs: [terraform-apply-dev]
+    steps:
+      # Checkout the code
+      # Marketplace: https://github.com/marketplace/actions/checkout
+      - name: "Setup - Checkout"
+        uses: actions/checkout@v4
+      - name: Get PR ID
+        id: pr-id
+        shell: bash
+        env:
+          GITHUB_REF: ${{ inputs.github_ref }}
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+
+      - name: Terraform Plan
+        uses: ./.github/plan
+        with:
+          WORKING_DIRECTORY: ${{ env.WORKING_DIRECTORY }}
+          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID_PROD  }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}          
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUCKET_NAME: ${{ vars.BUCKET_NAME_PROD }}
+          BUCKET_REGION: ${{ vars.BUCKET_REGION_PROD }}
+          BUCKET_KEY: ${{ vars.BUCKET_KEY_PROD }}
+
+terraform-apply-prod:
+    name: "Terraform Apply Prod"
+    runs-on: ubuntu-latest
+    needs: [terraform-plan-prod]
+    steps:
+      # Checkout the code
+      # Marketplace: https://github.com/marketplace/actions/checkout
+      - name: "Setup - Checkout"
+        uses: actions/checkout@v4
+
+      - name: Terraform Apply
+        uses: ./.github/apply
+        with:
+          WORKING_DIRECTORY: ${{ env.WORKING_DIRECTORY }}
+          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID_PROD }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}          
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUCKET_NAME: ${{ vars.BUCKET_NAME_PROD }}
+          BUCKET_REGION: ${{ vars.BUCKET_REGION_PROD }}
+          BUCKET_KEY: ${{ vars.BUCKET_KEY_PROD }}
