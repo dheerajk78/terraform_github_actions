@@ -42,6 +42,7 @@ runs:
     # By default, Terraform checks the home directory for a .aws folder with a credential file
     # Documentation: https://docs.aws.amazon.com/ses/latest/DeveloperGuide/create-shared-credentials-file.html
     - name: "Setup - Build AWS Credentials"
+      shell: bash
       run: |
         mkdir -p ~/.aws
         echo "[default]" > ~/.aws/credentials
@@ -55,6 +56,7 @@ runs:
     # Init pulls credentials from the .aws/credentials file by default
     - name: "Run - Terraform Init"
       working-directory: ${{ inputs.WORKING_DIRECTORY }}          
+      shell: bash
       run: |
         terraform init -input=false  \
         -backend-config="bucket=${{ inputs.BUCKET_NAME }}" \
@@ -63,10 +65,12 @@ runs:
         
     - name: Terraform format
       id: fmt
+      shell: bash
       run: terraform fmt -check
       
     - name: Terraform validate
       id: validate
+      shell: bash
       run: terraform validate
       
     # The id value is used for reference in the comment step via "steps.plan.outputs.stdout"
@@ -74,4 +78,5 @@ runs:
     - name: "Run - Terraform Plan"
       id: plan
       working-directory: ${{ inputs.WORKING_DIRECTORY }}        
+      shell: bash
       run: terraform plan -input=false -no-color  
