@@ -41,7 +41,7 @@ jobs:
         run: |
           mkdir -p ~/.aws
           echo "[default]" > ~/.aws/credentials
-          echo "aws_access_key_id = ${{ var.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_access_key_id = ${{ vars.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
 
       # Downloads a specific version of Terraform CLI and adds it to PATH
