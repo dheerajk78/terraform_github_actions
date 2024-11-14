@@ -13,9 +13,8 @@ on:
     - main
     paths:
     - terraform/**
-#env:
-#  WORKING_DIRECTORY: "./src/terraform"
-#  AWS_SHARED_CREDENTIALS_FILE: "~/.aws/credentials"
+env:
+  WORKING_DIRECTORY: "./src/terraform"
 
 jobs:
   terraform-plan:
@@ -51,8 +50,8 @@ jobs:
 
       # Init pulls credentials from the .aws/credentials file by default
       - name: "Run - Terraform Init"
-        env:
-          WORKING_DIRECTORY: "./src/terraform"
+        #env:
+         # WORKING_DIRECTORY: "./src/terraform"
         
         working-directory: ${{ env.WORKING_DIRECTORY }}          
         run: |
@@ -73,9 +72,9 @@ jobs:
       # Note: Color is disabled to prevent messy characters from appearing in the pull request comment
       - name: "Run - Terraform Plan"
         id: plan
-        env:
-          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          WORKING_DIRECTORY: "./src/terraform"
+        #env:
+        #  AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
+        #  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         # WORKING_DIRECTORY: "./src/terraform"
         working-directory: ${{ env.WORKING_DIRECTORY }}        
         run: terraform plan -input=false -no-color        
