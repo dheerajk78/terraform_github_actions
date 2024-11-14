@@ -58,7 +58,7 @@ jobs:
           AWS_SHARED_CREDENTIALS_FILE: "/home/runner/.aws/credentials"
         working-directory: ${{ env.WORKING_DIRECTORY }}          
         run: |
-          terraform init -input=false \
+          terraform init -input=false shared_credentials_file=${{ vars.AWS_SHARED_CREDENTIALS_FILE }} \
           -backend-config='bucket='${{ vars.BUCKET_NAME }} \
           -backend-config='region='${{ vars.BUCKET_REGION }} \
           -backend-config='key='${{ vars.BUCKET_KEY }}
