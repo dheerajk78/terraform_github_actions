@@ -70,4 +70,4 @@ runs:
     - name: "Run - Terraform Apply"
       working-directory: ${{ inputs.WORKING_DIRECTORY }}        
       shell: bash
-      run: terraform apply ${{ inputs.TFVARS_FILE }} -input=false -auto-approve
+      run: terraform apply -var-file=${{ inputs.TFVARS_FILE }} -input=false -auto-approve
