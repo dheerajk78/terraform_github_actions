@@ -1,4 +1,4 @@
-﻿name: "Terraform Plan"
+name: "Terraform Plan"
 
 # Trigger when a pull request is received
 on:
@@ -42,7 +42,6 @@ jobs:
           echo "[default]" > ~/.aws/credentials
           echo "aws_access_key_id = ${{ vars.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
-
       # Downloads a specific version of Terraform CLI and adds it to PATH
       # Marketplace: https://github.com/marketplace/actions/hashicorp-setup-terraform
       - name: "Setup - Terraform CLI"
@@ -52,7 +51,7 @@ jobs:
       - name: "Run - Terraform Init"
         working-directory: ${{ env.WORKING_DIRECTORY }}          
         run: |
-          terraform init -input=false \ 
+          terraform init -input=false  \
           -backend-config='bucket='${{ vars.BUCKET_NAME }} \
           -backend-config='region='${{ vars.BUCKET_REGION }} \
           -backend-config='key='${{ vars.BUCKET_KEY }}
@@ -70,4 +69,4 @@ jobs:
       - name: "Run - Terraform Plan"
         id: plan
         working-directory: ${{ env.WORKING_DIRECTORY }}        
-        run: terraform plan -input=false -no-color        
+        run: terraform plan -input=false -no-color  
