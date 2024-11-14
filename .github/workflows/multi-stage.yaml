@@ -44,7 +44,7 @@ jobs:
           BUCKET_NAME: ${{ vars.BUCKET_NAME_DEV }}
           BUCKET_REGION: ${{ vars.BUCKET_REGION_DEV }}
           BUCKET_KEY: ${{ vars.BUCKET_KEY_DEV }}
-          TFVARS_FILE: ./tf-vars/dev.tfvars
+          ENV: dev
           
   terraform-apply-dev:
     name: "Terraform Apply Dev"
@@ -66,7 +66,7 @@ jobs:
           BUCKET_NAME: ${{ vars.BUCKET_NAME_DEV }}
           BUCKET_REGION: ${{ vars.BUCKET_REGION_DEV }}
           BUCKET_KEY: ${{ vars.BUCKET_KEY_DEV }}
-          TFVARS_FILE: ./tf-vars/dev.tfvars
+          ENV: dev
 
   terraform-plan-prod:
     name: "Terraform Plan Prod"
@@ -96,7 +96,7 @@ jobs:
           BUCKET_NAME: ${{ vars.BUCKET_NAME_PROD }}
           BUCKET_REGION: ${{ vars.BUCKET_REGION_PROD }}
           BUCKET_KEY: ${{ vars.BUCKET_KEY_PROD }}
-          TFVARS_FILE: ./tf-vars/prod.tfvars
+          ENV: prod
 
   terraform-apply-prod:
     name: "Terraform Apply Prod"
@@ -118,4 +118,4 @@ jobs:
           BUCKET_NAME: ${{ vars.BUCKET_NAME_PROD }}
           BUCKET_REGION: ${{ vars.BUCKET_REGION_PROD }}
           BUCKET_KEY: ${{ vars.BUCKET_KEY_PROD }}
-          TFVARS_FILE: ./tf-vars/prod.tfvars
+          ENV: prod
