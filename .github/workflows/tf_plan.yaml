@@ -3,7 +3,16 @@
 # Trigger when a pull request is received
 on:
   workflow_dispatch:
+  push:
+    branches:
+    - main
+    paths:
+    - terraform/**
   pull_request:
+    branches:
+    - main
+    paths:
+    - terraform/**
 
 jobs:
   terraform-plan:
