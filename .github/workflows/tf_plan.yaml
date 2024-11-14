@@ -14,8 +14,8 @@ on:
     paths:
     - terraform/**
 env:
-  WORKING_DIRECTORY: "./src/terraform"
-  AWS_SHARED_CREDENTIALS_FILE: "~/.aws/credentials"
+#  WORKING_DIRECTORY: "./src/terraform"
+#  AWS_SHARED_CREDENTIALS_FILE: "~/.aws/credentials"
 
 jobs:
   terraform-plan:
@@ -52,6 +52,9 @@ jobs:
       # Init pulls credentials from the .aws/credentials file by default
       - name: "Run - Terraform Init"
         working-directory: ${{ env.WORKING_DIRECTORY }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           terraform init -input=false \
           -backend-config='bucket='${{ vars.BUCKET_NAME }} \
