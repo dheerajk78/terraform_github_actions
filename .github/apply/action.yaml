@@ -72,7 +72,7 @@ runs:
       uses: actions/download-artifact@v4
       with:
         name: ${{ inputs.ENV }}-tfplan
-        path: ${{ inputs.WORKING_DIRECTORY }}/tfplan
+        path: ${{ inputs.WORKING_DIRECTORY }}
         
  # Auto-approve prevents the requirement of human interaction
     - name: "Run - Terraform Apply"
