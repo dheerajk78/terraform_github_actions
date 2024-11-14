@@ -29,6 +29,7 @@ jobs:
 
   terraform-apply:
     name: "Terraform Apply"
+    needs: [terraform-plan]
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
