@@ -33,6 +33,16 @@ runs:
     # Marketplace: https://github.com/marketplace/actions/checkout
     - name: "Setup - Checkout"
       uses: actions/checkout@v4
+    - name: Get PR ID
+      id: pr-id
+      shell: bash
+      env:
+        GITHUB_REF: ${{ inputs.github_ref }}
+      run: |
+        PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+        echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+        echo $GITHUB_OUTPUT
+
 
     # Static analysis of Terraform templates to spot potential security issues
     # Marketplace: https://github.com/marketplace/actions/terraform-security-scan
