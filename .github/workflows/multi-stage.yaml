@@ -29,11 +29,15 @@ jobs:
         id: pr-id
         shell: bash
         env:
-          GITHUB_REF: ${{ inputs.github_ref }}
+          GITHUB_REF: ${{ env.GITHUB_REF }}
+          GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}
         run: |
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
-
+          echo $GITHUB_OUTPUT
+          PR_NUMBER=$(echo $GITHUB_REF_NAME | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+          echo $GITHUB_OUTPUT
       - name: Terraform Plan
         uses: ./.github/plan
         with:
