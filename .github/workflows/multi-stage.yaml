@@ -2,7 +2,7 @@ name: "Infrastructure Deployment"
 
 # Trigger when a pull request is received
 on:
-  #workflow_dispatch:
+  workflow_dispatch:
   push:
     branches:
     - main
