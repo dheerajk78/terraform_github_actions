@@ -25,6 +25,9 @@ inputs:
   ENV: 
     description: 'Environment for deployment'
     required: true
+   PR_ID: 
+    description: 'PR ID for deployment'
+    required: true
 
 runs:
   using: "composite"
@@ -76,6 +79,23 @@ runs:
         
  # Auto-approve prevents the requirement of human interaction
     - name: "Run - Terraform Apply"
+      id: apply
       working-directory: ${{ inputs.WORKING_DIRECTORY }}        
       shell: bash
-      run: terraform apply -input=false -auto-approve ./tfplan
+      run: |
+        echo 'apply<<EOF' >> $GITHUB_OUTPUT        
+        terraform apply -input=false -auto-approve ./tfplan >> $GITHUB_OUTPUT 
+        echo 'EOF' >> $GITHUB_OUTPUT
+
+    - name: Comment Apply
+      id: comment-apply
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        token: ${{ inputs.GITHUB_TOKEN }}
+        issue-number: ${{ inputs.PR_ID }}
+        body: |
+          Terraform Apply:
+
+          ```
+          ${{ steps.apply.outputs.apply }}
+          ```
