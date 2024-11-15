@@ -1,0 +1,72 @@
+name: "Infrastructure Deployment"
+
+# Trigger when a pull request is received
+on:
+  workflow_dispatch:
+  pull_request:
+env:
+  WORKING_DIRECTORY: "./src/terraform"
+
+jobs:
+  terraform-plan-dev:
+    name: "Terraform Plan DEV"
+    runs-on: ubuntu-latest
+    if: github.event.review.state != 'approved'
+    steps:
+      # Checkout the code
+      # Marketplace: https://github.com/marketplace/actions/checkout
+      - name: "Setup - Checkout"
+        uses: actions/checkout@v4
+      - name: Get PR ID
+        id: pr-id
+        shell: bash
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
+      - name: Terraform Plan
+        uses: ./.github/plan
+        with:
+          WORKING_DIRECTORY: ${{ env.WORKING_DIRECTORY }}
+          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID_DEV  }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}          
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          BUCKET_NAME: ${{ vars.BUCKET_NAME_DEV }}
+          BUCKET_REGION: ${{ vars.BUCKET_REGION_DEV }}
+          BUCKET_KEY: ${{ vars.BUCKET_KEY_DEV }}
+          ENV: dev
+          PR_ID: ${{ steps.pr-id.outputs.PR_NUMBER }} 
+          
+  
+  terraform-plan-prod:
+    name: "Terraform Plan Prod"
+    runs-on: ubuntu-latest
+    needs: [terraform-plan-dev]
+    steps:
+      # Checkout the code
+      # Marketplace: https://github.com/marketplace/actions/checkout
+      - name: "Setup - Checkout"
+        uses: actions/checkout@v4
+      - name: Get PR ID
+        id: pr-id
+        shell: bash
+        env:
+          GITHUB_REF: ${{ inputs.github_ref }}
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+
+      - name: Terraform Plan
+        uses: ./.github/plan
+        with:
+          WORKING_DIRECTORY: ${{ env.WORKING_DIRECTORY }}
+          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID_PROD  }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}          
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          BUCKET_NAME: ${{ vars.BUCKET_NAME_PROD }}
+          BUCKET_REGION: ${{ vars.BUCKET_REGION_PROD }}
+          BUCKET_KEY: ${{ vars.BUCKET_KEY_PROD }}
+          ENV: prod
+          PR_ID: ${{ steps.pr-id.outputs.PR_NUMBER }}
