@@ -1,4 +1,4 @@
-name: "Infrastructure Deployment"
+name: "Infrastructure Build"
 
 # Trigger when a pull request is received
 on:
