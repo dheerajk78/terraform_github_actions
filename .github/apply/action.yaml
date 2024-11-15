@@ -25,7 +25,7 @@ inputs:
   ENV: 
     description: 'Environment for deployment'
     required: true
-   PR_ID: 
+  PR_ID: 
     description: 'PR ID for deployment'
     required: true
 
