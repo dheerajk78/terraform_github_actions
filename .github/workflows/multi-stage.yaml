@@ -56,7 +56,13 @@ jobs:
       # Marketplace: https://github.com/marketplace/actions/checkout
       - name: "Setup - Checkout"
         uses: actions/checkout@v4
-
+        
+      - name: Get PR ID
+        id: pr-id
+        shell: bash
+        env:
+          GITHUB_REF: ${{ inputs.github_ref }}
+          
       - name: Terraform Apply
         uses: ./.github/apply
         with:
@@ -110,7 +116,13 @@ jobs:
       # Marketplace: https://github.com/marketplace/actions/checkout
       - name: "Setup - Checkout"
         uses: actions/checkout@v4
-
+        
+      - name: Get PR ID
+        id: pr-id
+        shell: bash
+        env:
+          GITHUB_REF: ${{ inputs.github_ref }}
+          
       - name: Terraform Apply
         uses: ./.github/apply
         with:
