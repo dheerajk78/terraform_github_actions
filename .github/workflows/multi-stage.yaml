@@ -45,6 +45,7 @@ jobs:
           BUCKET_REGION: ${{ vars.BUCKET_REGION_DEV }}
           BUCKET_KEY: ${{ vars.BUCKET_KEY_DEV }}
           ENV: dev
+          PR_ID: ${{ steps.pr-id.outputs.PR_NUMBER }} 
           
   terraform-apply-dev:
     name: "Terraform Apply Dev"
@@ -67,6 +68,7 @@ jobs:
           BUCKET_REGION: ${{ vars.BUCKET_REGION_DEV }}
           BUCKET_KEY: ${{ vars.BUCKET_KEY_DEV }}
           ENV: dev
+          PR_ID: ${{ steps.pr-id.outputs.PR_NUMBER }}
 
   terraform-plan-prod:
     name: "Terraform Plan Prod"
@@ -97,6 +99,7 @@ jobs:
           BUCKET_REGION: ${{ vars.BUCKET_REGION_PROD }}
           BUCKET_KEY: ${{ vars.BUCKET_KEY_PROD }}
           ENV: prod
+          PR_ID: ${{ steps.pr-id.outputs.PR_NUMBER }}
 
   terraform-apply-prod:
     name: "Terraform Apply Prod"
@@ -119,3 +122,4 @@ jobs:
           BUCKET_REGION: ${{ vars.BUCKET_REGION_PROD }}
           BUCKET_KEY: ${{ vars.BUCKET_KEY_PROD }}
           ENV: prod
+          PR_ID: ${{ steps.pr-id.outputs.PR_NUMBER }}
