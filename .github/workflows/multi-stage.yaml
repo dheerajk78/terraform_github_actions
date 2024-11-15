@@ -2,7 +2,7 @@ name: "Infrastructure Deployment"
 
 # Trigger when a pull request is received
 on:
-  workflow_dispatch:
+  #workflow_dispatch:
   push:
     branches:
     - main
@@ -11,8 +11,8 @@ on:
   pull_request:
     branches:
     - main
-    paths:
-    - terraform/**
+  #  paths:
+  #  - terraform/**
 env:
   WORKING_DIRECTORY: "./src/terraform"
 
