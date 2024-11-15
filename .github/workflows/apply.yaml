@@ -1,9 +1,12 @@
-name: "Infrastructure Deployment"
+name: "Infrastructure Deploy"
 
 # Trigger when a pull request is received
 on:
-  pull_request_review:
-    types: [submitted]
+  #pull_request_review:
+  #  types: [submitted]
+  push:
+    branches:
+    - main
 env:
   WORKING_DIRECTORY: "./src/terraform"
 
