@@ -29,8 +29,8 @@ jobs:
         id: pr-id
         shell: bash
         env:
-          GITHUB_REF: ${{ env.GITHUB_REF }}
-          GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_REF_NAME: ${{ github.ref.name }}
         run: |
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
