@@ -2,8 +2,11 @@ name: "Infrastructure Deploy"
 
 # Trigger when a pull request is received
 on:
-  pull_request_review:
-    types: [submitted]
+  pull_request:
+    types:
+    - closed
+  #pull_request_review:
+  #  types: [submitted]
   #push:
   #  branches:
   #  - main
@@ -15,7 +18,7 @@ jobs:
   terraform-apply-dev:
     name: "Terraform Apply Dev"
     runs-on: ubuntu-latest
-    if: github.event.review.state == 'approved'
+    #if: github.event.review.state == 'approved'
     steps:
       # Checkout the code
       # Marketplace: https://github.com/marketplace/actions/checkout
