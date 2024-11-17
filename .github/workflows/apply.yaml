@@ -4,9 +4,9 @@ name: "Infrastructure Deploy"
 on:
   pull_request_review:
     types: [submitted]
-  push:
-    branches:
-    - main
+  #push:
+  #  branches:
+  #  - main
 env:
   WORKING_DIRECTORY: "./src/terraform"
 
@@ -15,7 +15,7 @@ jobs:
   terraform-apply-dev:
     name: "Terraform Apply Dev"
     runs-on: ubuntu-latest
-    #if: github.event.review.state == 'approved'
+    if: github.event.review.state == 'approved'
     steps:
       # Checkout the code
       # Marketplace: https://github.com/marketplace/actions/checkout
