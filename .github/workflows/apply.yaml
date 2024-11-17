@@ -15,7 +15,7 @@ jobs:
   terraform-apply-dev:
     name: "Terraform Apply Dev"
     runs-on: ubuntu-latest
-    if: github.event.review.state == 'approved'
+    #if: github.event.review.state == 'approved'
     steps:
       # Checkout the code
       # Marketplace: https://github.com/marketplace/actions/checkout
