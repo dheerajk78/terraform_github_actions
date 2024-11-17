@@ -72,10 +72,13 @@ runs:
         -backend-config="key=${{ inputs.BUCKET_KEY }}"
 
     - name: Publish Terraform Plan
-      uses: actions/download-artifact@v4
+      uses: dawidd6/action-download-artifact@v6
       with:
         name: ${{ inputs.ENV }}-tfplan
         path: ${{ inputs.WORKING_DIRECTORY }}
+        github_token: ${{ inputs.GITHUB_TOKEN }}
+        workflow: plan.yaml
+        pr: ${{ inputs.PR_ID }}
         
  # Auto-approve prevents the requirement of human interaction
     - name: "Run - Terraform Apply"
