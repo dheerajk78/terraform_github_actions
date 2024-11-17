@@ -76,6 +76,14 @@ jobs:
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
+
+      # Find the PR associated with this push, if there is one.
+      - name: Get PR 
+        id: findPr
+        uses: jwalton/gh-find-current-pr@master
+        with:
+      # Can be "open", "closed", or "all".  Defaults to "open".
+         state: all
           
       - name: Terraform Apply
         uses: ./.github/apply
@@ -88,4 +96,5 @@ jobs:
           BUCKET_REGION: ${{ vars.BUCKET_REGION_PROD }}
           BUCKET_KEY: ${{ vars.BUCKET_KEY_PROD }}
           ENV: prod
-          PR_ID: ${{ steps.pr-id.outputs.PR_NUMBER }}
+          #PR_ID: ${{ steps.pr-id.outputs.PR_NUMBER }}
+          PR_ID: ${{ steps.findPr.outputs.number }}
